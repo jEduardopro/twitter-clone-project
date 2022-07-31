@@ -1,3 +1,6 @@
 [submodule "tw-main-api"]
 	path = tw-main-api
 	url = https://github.com/jEduardopro/tw-main-api.git
+[submodule "tw-main-spa"]
+	path = tw-main-spa
+	url = https://github.com/jEduardopro/tw-main-spa.git
