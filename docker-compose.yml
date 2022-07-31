@@ -1,0 +1,76 @@
+version: "3.4"
+
+services:
+  tw-main-api:
+    platform: linux/arm64
+    container_name: tw-main-api
+    build: 
+      context: ./tw-main-api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./tw-main-api/:/var/www
+    expose:
+      - 9000
+    networks:
+      - tw-network
+  
+  tw-main-spa:
+    build: 
+      context: ./tw-main-spa
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./tw-main-spa/:/app
+      - /app/node_modules
+    ports:
+      - "8000:4200"
+    expose:
+      - 4200
+    networks:
+      - tw-network
+  
+  tw-db:
+    platform: linux/arm64
+    image: mysql:8.0.29
+    container_name: tw-db
+    restart: always
+    ports:
+      - "33065:3306"
+    environment:
+      MYSQL_DATABASE: twitter_clone
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - dbdata:/var/lib/mysql:delegated
+    networks:
+      - tw-network
+    command: 
+      # - --default-authentication-plugin=mysql_native_password
+      - --sort_buffer_size=1073741824
+      - --max_connections=1000
+  
+  tw-nginx:
+    platform: linux/arm64
+    image: nginx:1.21.3-alpine
+    container_name: tw-nginx
+    restart: unless-stopped
+    ports:
+      - "8200:80"
+    volumes:
+      - ./tw-main-api/:/var/www
+      - ./tw-main-api/docker/nginx:/etc/nginx/conf.d
+    networks:
+      - tw-network
+    
+networks:
+  tw-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+   driver: local
