@@ -17,6 +17,7 @@ services:
       - tw-network
   
   tw-main-spa:
+    container_name: tw-main-spa
     build: 
       context: ./tw-main-spa
       dockerfile: Dockerfile
@@ -28,7 +29,7 @@ services:
       - ./tw-main-spa/:/app
       - /app/node_modules
     ports:
-      - "8000:4200"
+      - "4200:4200"
     expose:
       - 4200
     networks:
