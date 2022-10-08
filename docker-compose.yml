@@ -28,6 +28,8 @@ services:
     volumes:
       - ./tw-main-spa/:/app
       - /app/node_modules
+    command: ["npm", "run", "start"]
+    # command: [ "tail", "-f" ]
     ports:
       - "4200:4200"
     expose:
@@ -54,6 +56,14 @@ services:
       # - --default-authentication-plugin=mysql_native_password
       - --sort_buffer_size=1073741824
       - --max_connections=1000
+  
+  tw-redis:
+    image: redis:alpine
+    container_name: tw-redis
+    ports:
+      - "6382:6379"
+    networks:
+      - tw-network
   
   tw-nginx:
     platform: linux/arm64
