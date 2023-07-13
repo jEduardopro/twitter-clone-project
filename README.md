@@ -13,7 +13,7 @@ git submodule update --init --recursive
 ```
 
 ## Continue with the instructions in the following README file before running the project
-<a href="https://github.com/jEduardopro/tw-main-api/blob/docker-setup/README.md">TW Main APi README File</a>
+<a href="https://github.com/jEduardopro/tw-main-api/blob/docker-setup/README.md">TW Main API README File</a>
 
 
 <br/>
